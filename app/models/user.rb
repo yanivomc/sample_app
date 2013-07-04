@@ -14,7 +14,8 @@ class User < ActiveRecord::Base
   has_secure_password
 
   before_save { |user| user.email = email.downcase }
-
+  before_save :create_remember_token # Call method before saving user to DB
+  
   validates :name, presence: true, length: { maximum: 50 }
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :email, presence:   true,
@@ -22,4 +23,16 @@ class User < ActiveRecord::Base
                     uniqueness: { case_sensitive: false }
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
+  after_validation { self.errors.messages.delete(:password_digest) }
+  #after_validation { self.errors.add(:password_digest, "Please type in a password")}
+
+  
+
+
+  private # Create hidden private mehods underneeth PRIVATE KEYWORD
+  
+  def create_remember_token
+    self.remember_token = SecureRandom.urlsafe_base64 # save a base64 token into the user "self" remember_token column in the DB
+  end 
+  
 end
