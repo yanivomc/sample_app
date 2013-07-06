@@ -1,5 +1,7 @@
 module SessionsHelper
-  def sign_in(user) 
+
+
+  def sign_in(user)
     cookies.permanent[:remember_token] = user.remember_token # Store the user.remember_token from the USER DB in a perment cockie for retirval in difrrent pages 
     
     
@@ -21,11 +23,15 @@ module SessionsHelper
     @current_user = @current_user ||= User.find_by_remember_token(cookies[:remember_token]) # match to @current_user if it's not NIL (was already found by this DEF) OR we go to the DB and find @current_user in the DB and save it as that @ variable
   end
   
+  def current_user?(user)
+    user == current_user
+  end
   
-  def sign_in(user)
-        cookies.permanent[:remember_token] = user.remember_token
-        self.current_user = user
-       end
+# Duplication of the sign_in above
+  #def sign_in(user)
+   #     cookies.permanent[:remember_token] = user.remember_token
+    #    self.current_user = user
+     #  end
   
   def signed_in?
     !current_user.nil?
@@ -39,6 +45,17 @@ module SessionsHelper
     def tokenis
         @tokenis = User.find_by_remember_token(cookies[:remember_token])
     end
-  
+
+
+
+def redirect_back_or(default)
+    redirect_to(session[:return_to] || default)
+    session.delete(:return_to)
+  end
+
+  def store_location
+    session[:return_to] = request.url
+ end
+ 
   
 end

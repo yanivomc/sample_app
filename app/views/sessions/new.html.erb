@@ -15,5 +15,6 @@
     <% end %>
 
     <p>New user? <%= link_to "Sign up now!", signup_path %></p>
+    <p>you came from: <%= session[:return_to] %></p>
   </div>
 </div>
