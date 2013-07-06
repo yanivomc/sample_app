@@ -13,6 +13,7 @@ SampleApp::Application.routes.draw do
   match '/signout', to: 'sessions#destroy', via: :delete
   match '/edit',    to: 'users#edit'
   match '/index',   to: 'static_pagess#users'
+  match '/html5',   to: 'users#users_html5'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

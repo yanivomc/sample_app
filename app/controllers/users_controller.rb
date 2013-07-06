@@ -4,7 +4,8 @@ class UsersController < ApplicationController
     # Checking if the user that is SIGNED IN is allowed to update,edit a specific profile
     before_filter :correct_user, only: [:edit, :update]
     before_filter :is_admin, only: [:destroy]
-
+    before_filter :signed_in_url_blocked, only: [:new, :create]
+    
 
 
   
@@ -63,6 +64,13 @@ class UsersController < ApplicationController
     
     
  # //// Private ////       
+
+    private
+    def signed_in_url_blocked
+      # Redirect signed_in users back to their original location if they try to reach :create or :new
+
+      redirect_to (root_path) unless !signed_in?
+    end
 
     private
     def is_admin
