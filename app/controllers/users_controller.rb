@@ -51,8 +51,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-    respond_with(@users = User.find_by_email("yanivc@plimus.com"))
-
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
 
 
